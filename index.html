@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+      <title>N-Gram</title>
+<body style="Background-color:black;">
+      <h1 style="color:white; text-align: center; font-family: arial;">N-Gram</h1>
+      <br>
+      <pre style="color:white; text-align: left; font-family: arial;">import random
+
+import random
+
+tp = 0
+
+def ask_again():
+    ans = input("Do you want to play again? (y/n): ")
+    return ans
+
+def choose_game():
+    user_choice = int(input("What game do you want to play? (1: heads or tails, 2: slot machine, 3: lucky seven, 4: blackjack, 5: roulette: "))
+    return user_choice
+
+def heads_or_tails():
+    print("The rules this game are simple, choose heads or tails, if you are correct, you win!")
+    points = 0
+    while True:
+        choice = int(input("Enter 1 or 2 (1 is heads, 2 is tails): "))
+        compchoice = random.randint(1, 2)
+        print(f"The result was: {compchoice}")
+        if choice == compchoice:
+            print("You win!!")
+            points = points + 1
+        else:
+            print("You lose!")
+        user_ans = ask_again()
+        if user_ans == "n":
+            break
+    
+    return points
+
+def slot_machine():
+    print("The player spins three symbols and wins if they match.")
+    points = 0
+    while True:
+        symbols = ["Cherries", "Lemon", "Bar", "Star", "Cash"]
+        compchoices = []
+        for i in range(1, 4):
+            choice = random.randint(0, 4)
+            compchoices.append(choice)
+            print(symbols[choice])
+            if i != 3:
+                input("Ready for the next one?")
+        if compchoices[0] == compchoices[1] and compchoices[1] == compchoices[2]:
+            print("You WON!!")
+            points = points + 1
+        else:
+            print("LOSER")
+        user_ans = ask_again()
+        if user_ans == "n":
+            break    
+    
+    return points
+
+def lucky_seven():
+    print("The player rolls two dice and wins if the sum is 7.")
+    points = 0
+    while True:
+        input("Are you ready for the first roll?")
+        choice = random.randint(1, 6)
+        print(f"You rolled a {choice}")
+        input("Are you ready for the second roll?")
+        choice2 = random.randint(1, 6)
+        print(f"You rolled a {choice2}")
+        total = choice + choice2
+        if total == 7:
+            print("You win!!")
+            points = points + 1
+        else:
+            print("LOSER")
+        print(f"Total: {total}")
+        user_ans = ask_again()
+        if user_ans == "n":
+            break 
+
+    return points
+
+def blackjack():
+    print("The player tries to get as close to 21 as possible without going over")
+    points = 0
+    while True:
+        bet = int(input("How much do you bet?: "))
+        total = 0
+        i = 0
+        stop = False
+        card = random.randint(1, 10)
+        print(f"Your first card is a {card}")
+        total = total + card
+        card = random.randint(1, 10)
+        print(f"Your second card is a {card}")
+        total = total + card
+        print(f"Your current total is {total}")
+        while stop == False:
+            i = i + 1
+            if i != 1:
+                print(f"Your current total is {total}")
+            ask = input("Hit or stand? (y/n): ")
+            if ask == "y":
+                card = random.randint(1, 10)
+                total = card + total
+                print(f"You got a {card}")
+            elif ask == "n":
+                print("Stopping now...")
+                stop = True
+            if total > 21:
+                print("You lose!!")
+                stop = True
+
+        error = 21 - total
+        print(f"Your total was {total}")
+        print(f"You were {error} off")
+        if error == 0:
+            print("YOU WINN")
+            points = points + bet
+        elif error < 0:
+            print("LOOOSEER")
+            points = points - bet
+        else:
+            points = points + round(-error + (bet ** -2))
+            print(round(-error + (bet ** -2)))
+        user_ans = ask_again()
+        if user_ans == "n":
+            break            
+    
+    return points
+
+def roulette():
+    print("The player tries to match the color, divisibility, or number and color.")
+    spaces = ["g0", "r1", "b2", "r3", "b4", "r5", "b6", "r7", "b8", "r9", "b10", "b11", "r12", "b13", 
+              "r14", "b15", "r16", "b17", "r18", "b19", "r20", "r21", "b22",
+              "r23", "b24", "r25", "b26", "r27", "b28", "r29", "b30", "b31", 
+              "r32", "b33", "r34", "b35", "r36"]
+    points = 0
+    while True:
+        bettype = int(input("Do you want to bet on color (1), divisibilty (2), or number [10 points] (3)?: "))
+        space = random.choice(spaces)
+        color = space[0]
+        if len(space) == 3:
+            number = (int(space[1]) * 10 + int(space[2]))
+        else:
+            number = int(space[1])
+        if bettype == 1:
+            betcolor = int(input("Green [Worth 5 points] (1), Red [1 point] (2), or Black [1 point] (3)?: "))
+            bet = int(input("How much do you want to bet?: "))
+            for i in range(10000):
+                print("[ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING]")
+            for i in range(100):
+                print("\n")
+            if betcolor == 1 and color == "g":
+                print("You WIN!!")
+                points = points + 5 + (bet / 2)
+            elif betcolor == 2 and color == "r":
+                print("You WIN!!")
+                points = points + 1 + (bet / 2)
+            elif betcolor == 3 and color == "b":
+                print("You WIN!!")
+                points = points + 1 + (bet / 2)
+            else:
+                print("LOSER")
+                points = points - bet
+        elif bettype == 2:
+            betdiv = int(input("0-12 [2 points] (1), 13-24 [2 points] (2), 25-36 [2 point] (3), Even [1 point] (4), or Odd [1 point] (5): "))
+            bet = int(input("How much do you want to bet?: "))
+            for i in range(10000):
+                print("[ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING]")
+            for i in range(100):
+                print("\n")
+            if betdiv == 1:
+                if number <= 12:
+                    print("You WIN!!!")
+                    points = points + 2 + bet
+                else:
+                    print("YOU LOSER")
+                    points = points - bet
+            elif betdiv == 2:
+                if number >= 13 and number <= 24:
+                    print("You WIN!!")
+                    points = points + 2 + bet
+                else:
+                    print("LOOOOSEER")
+                    points = points - bet
+            elif betdiv == 3:
+                if number >= 25 and number <= 36:
+                    print("You WIIN!!")
+                    points = points + 2 + bet
+                else:
+                    print("LOOOOOOOSSSSEEER")
+                    points = points - bet
+            elif betdiv == 4:
+                if number % 2 == 0:
+                    print("WINNER")
+                    points = points + 1 + bet
+                else:
+                    print("LOOSER")
+                    points = points - bet
+            elif betdiv == 5:
+                if number % 2 == 1:
+                    print("WINNER")
+                    points = points + 1 + bet
+                else:
+                    print("LOOSER")
+                    points = points - bet
+        elif bettype == 3:
+            betnum = int(input("Pick a number (0-36): "))
+            bet = int(input("How much do you want to bet?: "))
+            for i in range(10000):
+                print("[ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING][ROLLING]")
+            for i in range(100):
+                print("\n")
+            if number == betnum:
+                print("WINNER")
+                points = points + 10 + bet
+            else:
+                print("LOOOSSSSEEER")
+                points = points - bet
+
+        if color == "g":
+            color = "green"
+        elif color == "r":
+            color = "red"
+        else:
+            color = "black"
+
+        print(f"The number was {number}")
+        print(f"The color was {color}")
+        user_ans = ask_again()
+        if user_ans == "n":
+            break
+    
+    return points
+
+while True:
+    user = choose_game()
+    if user == 1:
+        p = heads_or_tails()
+    elif user == 2:
+        p = slot_machine()
+    elif user == 3:
+        p = lucky_seven()
+    elif user == 4:
+        p = blackjack()
+    elif user == 5:
+        p = roulette()
+    tp = tp + p
+    user_ans = ask_again()
+    if user_ans == "n":
+        break
+
+print(f"You scored {tp} total points")
+print("Goodbye")
+    
+
+</pre>
+
+</body>
+</html> 
